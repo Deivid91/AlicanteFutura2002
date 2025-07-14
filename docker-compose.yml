@@ -1,0 +1,46 @@
+# ¿Qué hace esto?
+# Levanta la base de datos PostgreSQL (v16)
+# Luego el backend, que se conecta a la DB
+# Por último el frontend, que espera a que el backend esté disponible
+# Cada servicio usa su propio Dockerfile (build:), así que no necesitas imágenes externas
+
+services:
+
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./initdb/swapify_backup.dump:/docker-entrypoint-initdb.d/restore.dump:ro
+      - ./initdb/restore.sh:/docker-entrypoint-initdb.d/restore.sh:ro
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: ./SwapifyAPI
+    image: swapify-backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
+      SPRING_JPA_SHOW_SQL: ${SPRING_JPA_SHOW_SQL}
+    volumes:
+      - ./SwapifyAPI/.env:/app/.env # Monta el .env en el contenedor
+    depends_on:
+      - db
+
+  frontend:
+    build: ./swapify-frontend
+    image: swapify-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
