@@ -71,7 +71,7 @@ Si prefieres instalar PostgreSQL en tu máquina:
 3.  Actualiza el archivo `.env` (o `application.properties` en el backend) con tus credenciales locales.
 4.  Ejecuta el backend normalmente.
 
-## �📖 Documentación Detallada
+## 📖 Documentación Detallada
 
 Si prefieres ejecutar cada parte por separado o necesitas más detalles técnicos sobre el desarrollo, consulta los README específicos:
 
