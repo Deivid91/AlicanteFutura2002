@@ -10,8 +10,14 @@ class CloudinaryConfig {
 
     @Bean
     fun cloudinary(): Cloudinary {
-        val dotenv = Dotenv.load()
-        val cloudinaryUrl = dotenv["CLOUDINARY_URL"]
+        // 1) Intentar leer de variables de entorno (Docker)
+        val envUrl = System.getenv("CLOUDINARY_URL")
+
+        // 2) Si no existe, usar .env (solo en desarrollo local)
+        val cloudinaryUrl = envUrl ?: Dotenv.configure()
+            .ignoreIfMissing()   // <-- evita que explote si no hay .env
+            .load()["CLOUDINARY_URL"]
+
         return Cloudinary(cloudinaryUrl)
     }
 }
