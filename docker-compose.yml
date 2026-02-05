@@ -1,9 +1,3 @@
-# ¿Qué hace esto?
-# Levanta la base de datos PostgreSQL (v16)
-# Luego el backend, que se conecta a la DB
-# Por último el frontend, que espera a que el backend esté disponible
-# Cada servicio usa su propio Dockerfile (build:), así que no necesitas imágenes externas
-
 services:
 
   db:
@@ -13,10 +7,16 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
+      - pgdata:/var/lib/postgresql/data  # ✅ Persistencia de datos
       - ./initdb/swapify_backup.dump:/docker-entrypoint-initdb.d/restore.dump:ro
       - ./initdb/restore.sh:/docker-entrypoint-initdb.d/restore.sh:ro
     ports:
       - "5432:5432"
+    healthcheck:  # ✅ Verifica que la DB esté lista
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   backend:
     build: ./SwapifyAPI
@@ -28,11 +28,13 @@ services:
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
       SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
+      # Mostrar SQL en consola. Útil solo para desarrollo local.
       SPRING_JPA_SHOW_SQL: ${SPRING_JPA_SHOW_SQL}
-    volumes:
-      - ./SwapifyAPI/.env:/app/.env # Monta el .env en el contenedor
+      CLOUDINARY_URL: ${CLOUDINARY_URL}
     depends_on:
-      - db
+      db:
+        condition: service_healthy  # ✅ Espera a que la DB esté saludable
+    restart: unless-stopped  # ✅ Reinicia si falla
 
   frontend:
     build: ./swapify-frontend
@@ -41,6 +43,7 @@ services:
       - "5173:5173"
     depends_on:
       - backend
+    restart: unless-stopped
 
 volumes:
-  pgdata:
+  pgdata:  # ✅ Ahora sí se usa

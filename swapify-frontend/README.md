@@ -1,54 +1,55 @@
-# React + TypeScript + Vite
+# Swapify Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este es el cliente web de Swapify, una Single Page Application (SPA) desarrollada con **React** y **Vite**. Ofrece una interfaz moderna y responsiva para interactuar con la plataforma de trueque.
 
-Currently, two official plugins are available:
+> ⚠️ **Nota**
+> Este frontend forma parte de un proyecto desarrollado con fines educativos.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠️ Stack Tecnológico
 
-## Expanding the ESLint configuration
+*   **Framework**: React 19
+*   **Lenguaje**: TypeScript
+*   **Build Tool**: Vite
+*   **Estilos**: Bootstrap 5 (React-Bootstrap)
+*   **Mapas**: React Leaflet / Google Maps API
+*   **Comunicación Real-time**: SockJS & StompJS (WebSockets)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📋 Prerrequisitos
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+*   **Node.js** (versión 18 o superior recomendada).
+*   **npm** (incluido con Node.js).
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🚀 Instalación y Ejecución
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1.  **Navega al directorio**:
+    ```bash
+    cd swapify-frontend
+    ```
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+2.  **Instala las dependencias**:
+    ```bash
+    npm install
+    ```
+
+3.  **Inicia el servidor de desarrollo**:
+    ```bash
+    npm run dev
+    ```
+
+La aplicación estará disponible en `http://localhost:5173`.
+
+## 📜 Scripts Disponibles
+
+*   `npm run dev`: Inicia el servidor de desarrollo con Hot Module Replacement (HMR).
+*   `npm run build`: Compila la aplicación para producción (TypeScript + Vite).
+*   `npm run lint`: Ejecuta ESLint para verificar la calidad del código.
+*   `npm run preview`: Previsualiza la build de producción localmente.
+
+## 📂 Estructura del Proyecto (`src/`)
+
+*   `assets/`: Imágenes y recursos estáticos.
+*   `components/`: Componentes reutilizables de React (Botones, Tarjetas, Mapas, etc.).
+*   `contexts/`: Contextos de React para gestión de estado global (Auth, Favoritos, Notificaciones).
+*   `hooks/`: Custom Hooks.
+*   `pages/`: Vistas principales de la aplicación (Inicio, Login, Perfil, etc.).
+*   `services/`: Funciones para comunicación con la API Backend (Axios).
