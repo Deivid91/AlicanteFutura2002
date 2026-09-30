@@ -10,6 +10,7 @@ Este proyecto fue desarrollado como parte de un desafío técnico en el contexto
 > No está pensado para su uso en entornos de producción sin aplicar medidas adicionales
 > de seguridad, escalabilidad y mantenimiento (hardening).
 
+<img src="./swapify-frontend/src/assets/videos/DemoSwapify.gif" width="600">
 
 ## 🚀 Tecnologías Principales
 
